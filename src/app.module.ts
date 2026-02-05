@@ -3,6 +3,7 @@ import { TicketModule } from './ticket/ticket.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './user/entities/user.entity';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         database: process.env.DB_NAME,
         autoLoadEntities: true,
         synchronize: true,
+        // entities: [User]
       }),
 
     UserModule, TicketModule],
