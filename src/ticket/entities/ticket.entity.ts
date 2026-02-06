@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity('tickets')
@@ -22,14 +22,20 @@ export class Ticket {
     })
     description: string;
     
-    @Column('text')
+    @Column('text',
+        {
+            default: 'Media'
+        }
+    )
     priority: string;
     
-    @Column('text')
+    @Column('text', {
+        nullable: true,
+    })
     categoria: string;
     
     @Column('text',{
-        default: 'Open'
+        default: 'Abierto'
     })
     status: string;
     
@@ -44,7 +50,15 @@ export class Ticket {
     createdAt: Date;
 
     @UpdateDateColumn({
-        type: 'timestamptz'
+        type: 'timestamp',
+        nullable: true,
+        default: null,
     })
-    updatedAt?: Date;
+    updatedAt: Date | null;
+    
+    @BeforeInsert()
+    setCreatedAt() {
+        this.createdAt = new Date();
+        this.updatedAt = null;
+    }
 }
