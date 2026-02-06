@@ -2,9 +2,12 @@ import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeor
 
 
 @Entity('tickets')
+
 export class Ticket {
+
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
 
     @Column({
         type: 'varchar',

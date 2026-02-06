@@ -18,11 +18,11 @@ export class User {
     fullname: string;
     
     @Column('bool')
-    isActive: boolean;
+    isActive: boolean=true;
     
     @Column('text', {
         array: true,
-        default: ['user']
+        default: ['cliente']
     })
-    roles: string[];
+    roles: string[]= ['cliente'];
 }
