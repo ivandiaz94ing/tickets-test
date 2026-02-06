@@ -1,7 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { TicketPriority } from './enums/ticket-priority.enum';
+import { filter } from 'rxjs';
+import { GetTicketsFilterDto } from './dto/get-tickets-filter.dto';
 
 @Controller('ticket')
 export class TicketController {
@@ -12,9 +15,14 @@ export class TicketController {
     return this.ticketService.create(createTicketDto);
   }
 
+  // @Get()
+  // findAll() {
+  //   return this.ticketService.findAll();
+  // }
+
   @Get()
-  findAll() {
-    return this.ticketService.findAll();
+  findAllFiltered(@Query() filterDto: GetTicketsFilterDto) {
+  return this.ticketService.findAllFiltered(filterDto);
   }
 
   @Get(':id')

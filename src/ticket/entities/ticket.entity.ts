@@ -1,4 +1,6 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { TicketPriority } from "../enums/ticket-priority.enum";
+import { TicketStatus } from "../enums/ticket-status.enum";
 
 
 @Entity('tickets')
@@ -22,22 +24,26 @@ export class Ticket {
     })
     description: string;
     
-    @Column('text',
+    @Column(
         {
-            default: 'Media'
+            type: 'enum',
+            enum: TicketPriority,
+            default: TicketPriority.BAJA
         }
     )
-    priority: string;
+    priority: TicketPriority;
     
     @Column('text', {
         nullable: true,
     })
     categoria: string;
     
-    @Column('text',{
-        default: 'Abierto'
+    @Column({
+        type: 'enum',
+        enum: TicketStatus,
+        default: TicketStatus.ABIERTO
     })
-    status: string;
+    status: TicketStatus;
     
     @Column('text', {
         nullable: true
