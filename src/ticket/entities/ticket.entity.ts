@@ -1,6 +1,7 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { TicketPriority } from "../enums/ticket-priority.enum";
 import { TicketStatus } from "../enums/ticket-status.enum";
+import { TicketComentario } from "./ticket-cometario.entity";
 
 
 @Entity('tickets')
@@ -61,6 +62,13 @@ export class Ticket {
         default: null,
     })
     updatedAt: Date | null;
+    
+    @OneToMany(
+        () => TicketComentario,
+        (comentario) => comentario.ticket,
+        { cascade: true }
+    )
+    comentarios?: TicketComentario[];
     
     @BeforeInsert()
     setCreatedAt() {
