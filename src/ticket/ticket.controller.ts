@@ -3,7 +3,6 @@ import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { TicketPriority } from './enums/ticket-priority.enum';
-import { filter } from 'rxjs';
 import { GetTicketsFilterDto } from './dto/get-tickets-filter.dto';
 
 @Controller('ticket')

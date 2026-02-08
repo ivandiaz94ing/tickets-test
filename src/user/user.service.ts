@@ -29,7 +29,10 @@ export class UserService {
       });
 
       await this.userRepository.save(user); 
-      return user;
+      return {
+        user,
+        token: this.getJwtToken({ id: user.id })
+      };
     } catch (error) {
       this.handleError(error);
     }
@@ -41,7 +44,9 @@ export class UserService {
       where: { email }, 
       select: { 
         email: true, 
-        password: true   }
+        password: true,
+        id: true  
+      }
     });
 
     if (!user) 
@@ -51,8 +56,8 @@ export class UserService {
       throw new BadRequestException('Credentials are not valid (password)');
 
     return {
-      email: user.email, 
-      token: this.getJwtToken({ email: user.email })};
+      id: user.id,
+      token: this.getJwtToken({ id: user.id })};
   }
 
   private getJwtToken(payload: JwtPayload) {
