@@ -6,6 +6,8 @@ import { TicketPriority } from './enums/ticket-priority.enum';
 import { GetTicketsFilterDto } from './dto/get-tickets-filter.dto';
 import { Auth } from 'src/user/decorators/auth-decorator';
 import { ValidRoles } from 'src/user/interfaces/validRoles';
+import { GetUser } from 'src/user/decorators/get-user-decorator';
+import { User } from 'src/user/entities/user.entity';
 
 @Controller('ticket')
 export class TicketController {
@@ -13,8 +15,11 @@ export class TicketController {
 
   @Post()
   @Auth(ValidRoles.CLIENT, ValidRoles.ADMIN)
-  create(@Body() createTicketDto: CreateTicketDto) {
-    return this.ticketService.create(createTicketDto);
+  create(
+    @Body() createTicketDto: CreateTicketDto,
+    @GetUser() user: User
+  ) {
+    return this.ticketService.create(createTicketDto, user);
   }
 
   // @Get()

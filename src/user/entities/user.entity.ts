@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Ticket } from 'src/ticket/entities';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -25,4 +26,11 @@ export class User {
         default: ['cliente']
     })
     roles: string[]= ['cliente'];
+
+    @OneToMany(
+        () => Ticket,
+        (ticket) => ticket.user,
+        { eager: false }
+    )
+    tickets: Ticket[];
 }

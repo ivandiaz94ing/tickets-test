@@ -6,6 +6,7 @@ import { Ticket } from './entities/ticket.entity';
 import { Filter, Repository } from 'typeorm';
 import { TicketPriority } from './enums/ticket-priority.enum';
 import { GetTicketsFilterDto } from './dto/get-tickets-filter.dto';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class TicketService {
@@ -16,11 +17,13 @@ export class TicketService {
   ) {
     
   }
-  async create(createTicketDto: CreateTicketDto) {
 
+  async create(createTicketDto: CreateTicketDto, user: User) {
     try {
       
-      const ticket = this.ticketRepository.create(createTicketDto);
+      const ticket = this.ticketRepository.create({
+        ...createTicketDto,
+        user});
       await this.ticketRepository.save(ticket);
       return ticket;
       

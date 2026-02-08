@@ -1,7 +1,8 @@
-import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { TicketPriority } from "../enums/ticket-priority.enum";
 import { TicketStatus } from "../enums/ticket-status.enum";
 import { TicketComentario } from "./ticket-cometario.entity";
+import { User } from "src/user/entities/user.entity";
 
 
 @Entity('tickets')
@@ -62,6 +63,13 @@ export class Ticket {
         default: null,
     })
     updatedAt: Date | null;
+
+    @ManyToOne(
+        () => User,
+        (user) => user.tickets,
+        { eager: true }
+    )
+    user: User;
     
     @OneToMany(
         () => TicketComentario,
