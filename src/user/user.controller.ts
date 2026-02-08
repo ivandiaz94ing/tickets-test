@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Req, SetMetadata } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Patch, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -7,6 +7,9 @@ import { GetUser } from './decorators/get-user-decorator';
 import { User } from './entities/user.entity';
 import { GetRowHeaders } from './decorators/get-rowHeader-decorator';
 import { UserRoleGuard } from './guards/user-role.guard';
+import { RoleProtected } from './decorators/role-protected.decorator';
+import { ValidRoles } from './interfaces/validRoles';
+import { Auth } from './decorators/auth-decorator';
 
 @Controller('user')
 export class UserController {
@@ -19,6 +22,17 @@ export class UserController {
   @Post('login')
   login(@Body() loginUserDto: LoginUserDto) {
     return this.userService.login(loginUserDto);
+  }
+  @Get()
+  @Auth(ValidRoles.ADMIN)
+  findAllUsers() {
+    return this.userService.findAllUsers();
+  }
+
+  @Patch(':id')
+  @Auth(ValidRoles.ADMIN)
+  updateUserRole(@Param('id') id: string) {
+      return this.userService.updateUserRole(id);
   }
 
   @Get('private')
@@ -41,13 +55,27 @@ export class UserController {
   // @SetMetadata('roles', ['admin', 'agent'])
 
   @Get('private2')
+  @RoleProtected(ValidRoles.CLIENT)
   @UseGuards(AuthGuard(), UserRoleGuard)
   privateRoute2(
     @GetUser() user: User,
   ){
     return{
       ok: true,
-      message: 'This is a private route 2',
+      // message: 'Agregar este guard a la ruta de consultar todos los tickets',
+      message: 'Los admin son los unicos que pueden acceder a la ruta de consultar usuarios y actualizar roles',
+      user,
+    }
+  }
+
+  @Get('private3')
+  @Auth(ValidRoles.ADMIN)
+  privateRoute3(
+    @GetUser() user: User,
+  ){
+    return{
+      ok: true,
+      message: 'hola',
       user,
     }
 

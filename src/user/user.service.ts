@@ -19,6 +19,10 @@ export class UserService {
     private readonly jwtService: JwtService
   ){}
 
+  async findAllUsers() {
+    return await this.userRepository.find();
+  }
+
   async create(createUserDto: CreateUserDto) {
     try {
       const {password, ...userData} = createUserDto;
@@ -37,6 +41,9 @@ export class UserService {
       this.handleError(error);
     }
   }
+  async updateUserRole(id: string) {
+    console.log('Implementando metodo de actualizacion de usuario');
+  } 
 
   async login( loginUserDto: LoginUserDto ) {
     const { email, password } = loginUserDto;
